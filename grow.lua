@@ -1,74 +1,69 @@
---[[
-    Grow a Garden - Seed Pack Luck Forcer
-    Este script crea una interfaz para "simular" que una semilla específica salió de un Seed Pack.
-    Colócalo como LocalScript en StarterPlayerScripts.
---]]
+-- Cargar la librería Orion UI
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
-local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/jensonhirst/Orion/main/Orion.lua"))()
-local Players = game:GetService("Players")
-
-local selectedPack = "Ninguno"
-local desiredSeed = "Ninguna"
-
+-- Crear ventana
 local Window = OrionLib:MakeWindow({
-    Name = "🌱 SEED PACK LUCK",
+    Name = "Seed Pack Forcer",
     HidePremium = false,
-    SaveConfig = false
+    SaveConfig = true,
+    ConfigFolder = "SeedPackForcer"
 })
 
+-- Crear pestaña principal
 local Tab = Window:MakeTab({
-    Name = "Simulador",
-    Icon = "rbxassetid://6031265974",
+    Name = "Main",
+    Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
 
-Tab:AddParagraph("🎮 Forzar Semilla", "Escribe el nombre del pack y la semilla que quieres recibir.")
+-- Variables para guardar selecciones
+local selectedPack = ""
+local selectedSeed = ""
 
--- 📦 Entrada manual para el seed pack
+-- Añadir textbox para nombre de Seed Pack
 Tab:AddTextbox({
     Name = "Nombre del Seed Pack",
     Default = "",
     TextDisappear = false,
-    Callback = function(text)
-        selectedPack = text
+    Callback = function(value)
+        selectedPack = value
     end
 })
 
--- 🌸 Entrada manual para la semilla deseada
+-- Añadir textbox para nombre de semilla deseada
 Tab:AddTextbox({
     Name = "Nombre de la Semilla",
     Default = "",
     TextDisappear = false,
-    Callback = function(text)
-        desiredSeed = text
+    Callback = function(value)
+        selectedSeed = value
     end
 })
 
--- 🧪 Botón para forzar semilla
+-- Botón para simular obtener semilla
 Tab:AddButton({
-    Name = "🎁 Simular Semilla Recibida",
+    Name = "Forzar Semilla",
     Callback = function()
-        if selectedPack == "" or desiredSeed == "" then
+        if selectedPack == "" or selectedSeed == "" then
             OrionLib:MakeNotification({
-                Name = "⚠️ Error",
-                Content = "Debes escribir ambos nombres.",
+                Name = "Error",
+                Content = "Por favor, ingresa ambos valores.",
                 Image = "rbxassetid://7733658504",
                 Time = 4
             })
             return
         end
 
-        local message = "Obtuviste '" .. desiredSeed .. "' desde el pack '" .. selectedPack .. "'"
-
         OrionLib:MakeNotification({
-            Name = "🌟 Semilla Recibida",
-            Content = message,
+            Name = "Semilla Obtenida",
+            Content = "Obtuviste '"..selectedSeed.."' desde '"..selectedPack.."'",
             Image = "rbxassetid://6023426915",
             Time = 5
         })
 
-        print("[Simulado] " .. message)
+        print("Semilla forzada: "..selectedSeed.." del pack "..selectedPack)
     end
 })
 
+-- Inicializar interfaz Orion (obligatorio)
 OrionLib:Init()
