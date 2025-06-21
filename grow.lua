@@ -1,26 +1,25 @@
--- Cargar la librería Orion UI
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+-- SeedPackForcer.lua
+-- Script para Roblox, usa Orion UI Library desde raw.githubusercontent.com
+-- Coloca este script en StarterPlayerScripts para que el jugador tenga la GUI.
 
--- Crear ventana
+local OrionLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Orion/main/source'))()
+
 local Window = OrionLib:MakeWindow({
     Name = "Seed Pack Forcer",
     HidePremium = false,
     SaveConfig = true,
-    ConfigFolder = "SeedPackForcer"
+    ConfigFolder = "SeedPackForcerConfig"
 })
 
--- Crear pestaña principal
 local Tab = Window:MakeTab({
     Name = "Main",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
 
--- Variables para guardar selecciones
 local selectedPack = ""
 local selectedSeed = ""
 
--- Añadir textbox para nombre de Seed Pack
 Tab:AddTextbox({
     Name = "Nombre del Seed Pack",
     Default = "",
@@ -30,7 +29,6 @@ Tab:AddTextbox({
     end
 })
 
--- Añadir textbox para nombre de semilla deseada
 Tab:AddTextbox({
     Name = "Nombre de la Semilla",
     Default = "",
@@ -40,14 +38,13 @@ Tab:AddTextbox({
     end
 })
 
--- Botón para simular obtener semilla
 Tab:AddButton({
     Name = "Forzar Semilla",
     Callback = function()
         if selectedPack == "" or selectedSeed == "" then
             OrionLib:MakeNotification({
                 Name = "Error",
-                Content = "Por favor, ingresa ambos valores.",
+                Content = "Por favor, ingresa ambos campos.",
                 Image = "rbxassetid://7733658504",
                 Time = 4
             })
@@ -56,14 +53,13 @@ Tab:AddButton({
 
         OrionLib:MakeNotification({
             Name = "Semilla Obtenida",
-            Content = "Obtuviste '"..selectedSeed.."' desde '"..selectedPack.."'",
+            Content = "Obtuviste '" .. selectedSeed .. "' desde '" .. selectedPack .. "'",
             Image = "rbxassetid://6023426915",
             Time = 5
         })
 
-        print("Semilla forzada: "..selectedSeed.." del pack "..selectedPack)
+        print("[SeedPackForcer] Semilla forzada: " .. selectedSeed .. " del pack " .. selectedPack)
     end
 })
 
--- Inicializar interfaz Orion (obligatorio)
 OrionLib:Init()
